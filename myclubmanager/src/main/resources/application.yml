@@ -1,0 +1,36 @@
+application:
+  mailing:
+    contact-email: clubmanager.testacc@gmail.com
+  security:
+    activation-token:
+      length: 6
+      valid-duration: 15
+    jwt:
+      secret-key: BJZS1i93IqUfoq9ZwRODyjM86PwNTsPj4UbuAjZtzgE0YPn+CnH2sYS1ENVjw9H
+      expiration: 8640000  # 24 hours
+      cookie-expiry: 1800  # set expiry for 30 mins
+
+spring:
+  application:
+    name: myclubmanager
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${application.mailing.contact-email}
+    password: vige pucq jywv sxmk
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: false
+    protocol: smtp
+
+server:
+  port: 8088
+  servlet:
+    context-path: /api/v1
+
+springdoc:
+  default-produces-media-type: application/json
