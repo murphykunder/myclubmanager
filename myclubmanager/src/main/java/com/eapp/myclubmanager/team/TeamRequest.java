@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 public record TeamRequest(
 
         Long id,
-        @NotBlank(message = "Team name is required")
         @NotEmpty(message = "Team name is required")
+        @NotBlank(message = "Team name is required")
         String name
 ) {
 }

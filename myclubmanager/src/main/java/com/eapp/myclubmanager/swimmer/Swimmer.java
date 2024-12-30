@@ -1,5 +1,6 @@
 package com.eapp.myclubmanager.swimmer;
 
+import com.eapp.myclubmanager.team.Team;
 import com.eapp.myclubmanager.trainer.Trainer;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -28,6 +29,9 @@ public class Swimmer {
     @ManyToOne()
     @JoinColumn(name = "trainer_id", referencedColumnName = "id", nullable = true)
     private Trainer trainer;
+    @ManyToOne()
+    @JoinColumn(name = "team_id", referencedColumnName = "id", nullable = true)
+    private Team team;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -44,13 +48,14 @@ public class Swimmer {
     public Swimmer() {
     }
 
-    public Swimmer(Long id, String firstname, String lastname, String email, String trainingStatus, Trainer trainer, LocalDateTime createdAt, Long createdBy, LocalDateTime lastModifiedAt, Long lastModifiedBy) {
+    public Swimmer(Long id, String firstname, String lastname, String email, String trainingStatus, Trainer trainer, Team team, LocalDateTime createdAt, Long createdBy, LocalDateTime lastModifiedAt, Long lastModifiedBy) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.trainingStatus = trainingStatus;
         this.trainer = trainer;
+        this.team = team;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.lastModifiedAt = lastModifiedAt;
@@ -149,6 +154,7 @@ public class Swimmer {
         private LocalDateTime lastModifiedAt;
         private Long lastModifiedBy;
         private Trainer trainer;
+        private Team team;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -200,8 +206,13 @@ public class Swimmer {
             return this;
         }
 
+        public Builder setTeam(Team team) {
+            this.team = team;
+            return this;
+        }
+
         public Swimmer createSwimmer() {
-            return new Swimmer(id, firstname, lastname, email, trainingStatus, trainer, createdAt, createdBy, lastModifiedAt, lastModifiedBy);
+            return new Swimmer(id, firstname, lastname, email, trainingStatus, trainer, team, createdAt, createdBy, lastModifiedAt, lastModifiedBy);
         }
     }
 }

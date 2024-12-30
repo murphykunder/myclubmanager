@@ -1,7 +1,7 @@
-package com.eapp.myclubmanager.trainer;
+package com.eapp.myclubmanager.team;
 
 import com.eapp.myclubmanager.swimmer.Swimmer;
-import com.eapp.myclubmanager.team.Team;
+import com.eapp.myclubmanager.trainer.Trainer;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,24 +14,16 @@ import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Trainer {
+public class Team {
 
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
-    private String firstname;
-    @Column(nullable = false)
-    private String lastname;
-    @Column(nullable = false, unique = true)
-    private String email;
-    @Column(nullable = false)
-    private String phoneNumber;
-    @OneToMany(mappedBy = "trainer")
+    private String name;
+    @OneToMany(mappedBy = "team")
     private List<Swimmer> swimmers;
-    @ManyToOne()
-    @JoinColumn(name = "team_id", referencedColumnName = "id", nullable = true)
-    private Team team;
+    @OneToMany(mappedBy = "team")
+    private List<Trainer> trainers;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -45,21 +37,18 @@ public class Trainer {
     @Column(insertable = false)
     private Long lastModifiedBy;
 
-    public Trainer(Long id, String firstname, String lastname, String email, String phoneNumber, List<Swimmer> swimmers, Team team, LocalDateTime createdAt, Long createdBy, LocalDateTime lastModifiedAt, Long lastModifiedBy) {
+    public Team() {
+    }
+
+    public Team(Long id, String name, List<Swimmer> swimmers, List<Trainer> trainers, LocalDateTime createdAt, Long createdBy, LocalDateTime lastModifiedAt, Long lastModifiedBy) {
         this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.name = name;
         this.swimmers = swimmers;
-        this.team = team;
+        this.trainers = trainers;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.lastModifiedAt = lastModifiedAt;
         this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Trainer() {
     }
 
     public Long getId() {
@@ -70,36 +59,28 @@ public class Trainer {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public List<Swimmer> getSwimmers() {
+        return swimmers;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setSwimmers(List<Swimmer> swimmers) {
+        this.swimmers = swimmers;
     }
 
-    public String getEmail() {
-        return email;
+    public List<Trainer> getTrainers() {
+        return trainers;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setTrainers(List<Trainer> trainers) {
+        this.trainers = trainers;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -134,50 +115,34 @@ public class Trainer {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public List<Swimmer> getSwimmers() {
-        return swimmers;
-    }
-
-    public void setSwimmers(List<Swimmer> swimmers) {
-        this.swimmers = swimmers;
-    }
-
     public static class Builder {
 
         private Long id;
-        private String firstname;
-        private String lastname;
-        private String email;
-        private String phoneNumber;
+        private String name;
+        private List<Swimmer> swimmers;
+        private List<Trainer> trainers;
         private LocalDateTime createdAt;
         private Long createdBy;
         private LocalDateTime lastModifiedAt;
         private Long lastModifiedBy;
-        private List<Swimmer> swimmers;
-        private Team team;
 
         public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setFirstname(String firstname) {
-            this.firstname = firstname;
+        public Builder setName(String name) {
+            this.name = name;
             return this;
         }
 
-        public Builder setLastname(String lastname) {
-            this.lastname = lastname;
+        public Builder setSwimmers(List<Swimmer> swimmers) {
+            this.swimmers = swimmers;
             return this;
         }
 
-        public Builder setEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder setPhoneNumber(String phoneNumber) {
-            this.phoneNumber = phoneNumber;
+        public Builder setTrainers(List<Trainer> trainers) {
+            this.trainers = trainers;
             return this;
         }
 
@@ -201,23 +166,8 @@ public class Trainer {
             return this;
         }
 
-        public Builder setSwimmers(List<Swimmer> swimmers) {
-            this.swimmers = swimmers;
-            return this;
-        }
-
-        public TrainerResponse createTrainerResponse() {
-            return new TrainerResponse.Builder().setId(id).setFirstname(firstname).setLastname(lastname).setEmail(email).setPhoneNumber(phoneNumber).createTrainerResponse();
-        }
-
-
-        public Builder setTeam(Team team) {
-            this.team = team;
-            return this;
-        }
-
-        public Trainer createTrainer() {
-            return new Trainer(id, firstname, lastname, email, phoneNumber, swimmers, team, createdAt, createdBy, lastModifiedAt, lastModifiedBy);
+        public Team createTeam() {
+            return new Team(id, name, swimmers, trainers, createdAt, createdBy, lastModifiedAt, lastModifiedBy);
         }
     }
 }

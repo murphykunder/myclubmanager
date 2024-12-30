@@ -39,8 +39,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String jwt;
         final String userEmail;
 
-        Cookie cookie =  WebUtils.getCookie(request, "accessToken");
-        jwt = cookie != null ? cookie.getValue() : null;
+//        Cookie cookie =  WebUtils.getCookie(request, "accessToken");
+//        jwt = cookie != null ? cookie.getValue() : null;
+        jwt = (String) request.getSession().getAttribute("accessToken");
 
         // check if Authorization header is present in the request, if not then do nothing and return
         if(jwt == null){
